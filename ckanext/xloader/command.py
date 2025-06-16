@@ -138,6 +138,8 @@ class XloaderCmd:
     jobs = rq_jobs.get_queue().jobs
     if not jobs:
         print('No jobs currently queued')
+        return
+
     for job in jobs:
         job_description = job.description.replace(
             'ckanext.xloader.jobs.xloader_data_into_datastore', '')
@@ -155,4 +157,5 @@ class XloaderCmd:
                   res_id=job_metadata['resource_id'],
                   url=job_metadata['original_url'],
               ))
+
 
