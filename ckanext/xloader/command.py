@@ -142,21 +142,19 @@ class XloaderCmd:
 
         for job in jobs:
             job_description = job.description.replace(
-                'ckanext.xloader.jobs.xloader_data_into_datastore', '')
+                'ckanext.xloader.jobs.xloader_data_into_datastore', ''
+            )
             try:
                 job_params = ast.literal_eval(job_description)
             except Exception as e:
-                print(f"Gagal memproses job description: {e}")
+                print(f"Failed to parse job description: {e}")
                 continue
 
             job_metadata = job_params['metadata']
             print('{id} Enqueued={enqueued:%Y-%m-%d %H:%M} res_id={res_id} '
-                'url={url}'.format(
-                    id=job._id,
-                    enqueued=job.enqueued_at,
-                    res_id=job_metadata['resource_id'],
-                    url=job_metadata['original_url'],
-                ))
-
-
-
+                    'url={url}'.format(
+                        id=job._id,
+                        enqueued=job.enqueued_at,
+                        res_id=job_metadata['resource_id'],
+                        url=job_metadata.get('original_url', 'N/A'),
+                    ))
