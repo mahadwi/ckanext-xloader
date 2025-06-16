@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import ast
 import logging
 import ckan.plugins.toolkit as tk
 
