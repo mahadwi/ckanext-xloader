@@ -132,30 +132,31 @@ class XloaderCmd:
                 self.error_occured = True
 
     def print_status(self):
-    import ast
-    import ckan.lib.jobs as rq_jobs
+        import ast
+        import ckan.lib.jobs as rq_jobs
 
-    jobs = rq_jobs.get_queue().jobs
-    if not jobs:
-        print('No jobs currently queued')
-        return
+        jobs = rq_jobs.get_queue().jobs
+        if not jobs:
+            print('No jobs currently queued')
+            return
 
-    for job in jobs:
-        job_description = job.description.replace(
-            'ckanext.xloader.jobs.xloader_data_into_datastore', '')
-        try:
-            job_params = ast.literal_eval(job_description)
-        except Exception as e:
-            print(f"Gagal parsing job description: {e}")
-            continue
+        for job in jobs:
+            job_description = job.description.replace(
+                'ckanext.xloader.jobs.xloader_data_into_datastore', '')
+            try:
+                job_params = ast.literal_eval(job_description)
+            except Exception as e:
+                print(f"Gagal memproses job description: {e}")
+                continue
 
-        job_metadata = job_params['metadata']
-        print('{id} Enqueued={enqueued:%Y-%m-%d %H:%M} res_id={res_id} '
-              'url={url}'.format(
-                  id=job._id,
-                  enqueued=job.enqueued_at,
-                  res_id=job_metadata['resource_id'],
-                  url=job_metadata['original_url'],
-              ))
+            job_metadata = job_params['metadata']
+            print('{id} Enqueued={enqueued:%Y-%m-%d %H:%M} res_id={res_id} '
+                'url={url}'.format(
+                    id=job._id,
+                    enqueued=job.enqueued_at,
+                    res_id=job_metadata['resource_id'],
+                    url=job_metadata['original_url'],
+                ))
+
 
 
